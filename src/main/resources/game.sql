@@ -1,0 +1,95 @@
+CREATE DATABASE game;
+USE game;
+
+CREATE TABLE player (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    level INT NOT NULL DEFAULT 1,
+    life INT NOT NULL,
+    damage INT NOT NULL,
+    defense INT NOT NULL,
+    main_skill VARCHAR(255) NOT NULL,
+    energy INT NOT NULL DEFAULT 0,
+    ultimate_skill_damage INT NOT NULL,
+    class_type VARCHAR(255) NOT NULL,
+    trophies INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE battle_history (
+    id INT NOT NULL AUTO_INCREMENT,
+    player1_id INT NOT NULL,
+    player2_id INT NOT NULL,
+    battle_result VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (player1_id) REFERENCES player(id),
+    FOREIGN KEY (player2_id) REFERENCES player(id)
+);
+
+CREATE TABLE AuditLog (
+    id INT NOT NULL AUTO_INCREMENT,
+    action VARCHAR(255) NOT NULL,
+    entityId INT NOT NULL,
+    entityClass VARCHAR(255) NOT NULL,
+    actionDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE Equipment (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    damage INT NOT NULL,
+    defense INT NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE Guild (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    level INT NOT NULL DEFAULT 1,
+    trophies INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE Guild_Audit (
+    id INT NOT NULL AUTO_INCREMENT,
+    guildId INT NOT NULL,
+    action VARCHAR(255) NOT NULL,
+    actionDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (guildId) REFERENCES Guild(id)
+);
+
+CREATE TABLE Item (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    type VARCHAR(255) NOT NULL,
+    effect VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE Quest (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    description VARCHAR(255) NOT NULL,
+    reward INT NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE Item_Audit (
+    id INT NOT NULL AUTO_INCREMENT,
+    itemId INT NOT NULL,
+    action VARCHAR(255) NOT NULL,
+    actionDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (itemId) REFERENCES Item(id)
+);
+
+CREATE TABLE Quest_Audit (
+    id INT NOT NULL AUTO_INCREMENT,
+    questId INT NOT NULL,
+    action VARCHAR(255) NOT NULL,
+    actionDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (questId) REFERENCES Quest(id)
+);
